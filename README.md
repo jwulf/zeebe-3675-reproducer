@@ -6,6 +6,7 @@ This is a reproducer for [#3675](https://github.com/zeebe-io/zeebe/issues/3675).
 
 ```
 git clone https://github.com/jwulf/zeebe-3675-reproducer
+cd zeebe-3675-reproducer
 npm i
 docker-compose up -d 
 node index.js
