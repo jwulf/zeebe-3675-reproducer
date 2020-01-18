@@ -8,3 +8,5 @@ services:
     ports:
       - "26500:26500"
       - "9600:9600"
+    environment:
+      - ZEEBE_GATEWAY_REQUEST_TIMEOUT=5s

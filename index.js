@@ -13,10 +13,15 @@ async function main() {
       content: [...content, job.customHeaders.type]
     });
   });
-
-  const _ = zbc.createWorkflowInstanceWithResult("issue-3675", {
-    instanceId
-  });
+  console.log(instanceId);
+  const _ = zbc
+    .createWorkflowInstanceWithResult("issue-3675", {
+      instanceId
+    })
+    .catch(e => {
+      console.log(e);
+      console.log("Timed out!");
+    });
 
   for (let i = 0; i < NUM_MSGS; i++) {
     console.log(`Publishing ${i} of ${NUM_MSGS}...`);
@@ -28,19 +33,23 @@ async function main() {
     };
     await zbc.publishMessage(msg);
   }
+
   await zbc.publishMessage({
     name: "CONTENT_3_EVENT",
     correlationKey: instanceId,
     variables: {},
     timeToLive: 3
   });
+
   await new Promise(resolve => setTimeout(() => resolve(), 300));
+
   await zbc.publishMessage({
     name: "PROJECTION_COMPLETE",
     correlationKey: instanceId,
     variables: {},
     timeToLive: 3
   });
+
   return _.then(outcome => console.log(outcome));
 }
 
